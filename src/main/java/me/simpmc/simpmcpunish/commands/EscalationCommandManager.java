@@ -80,11 +80,13 @@ public final class EscalationCommandManager {
 
     public void unregisterAll() {
         CommandMap commandMap = Bukkit.getCommandMap();
-        for (EscalationCommand command : this.commands.values()) {
-            command.unregister(commandMap);
-            commandMap.getKnownCommands().entrySet().removeIf(entry -> entry.getValue() == command);
+        try {
+            for (EscalationCommand command : this.commands.values()) {
+                command.unregister(commandMap);
+            }
+        } finally {
+            this.commands.clear();
         }
-        this.commands.clear();
     }
 
     private NavigableMap<Integer, String> readSteps(ConfigurationSection commandSection) {
